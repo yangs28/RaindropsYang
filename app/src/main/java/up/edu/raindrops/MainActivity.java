@@ -11,7 +11,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 //@Author Sean Yang
 //Version 2-10-25
-
+/**
+ * Subclass of SurfaceView that draws raindrops with unique colors and random locations
+ *
+ * @author Sean Yang
+ * @version 1.0 2-11-25
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

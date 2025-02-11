@@ -9,16 +9,15 @@ import android.view.SurfaceView;
 import java.util.Random;
 
 /**
-        * Write a description of class pg here.
-        *
-        * @author (your name)
- * @version (a version number or a date)
+ * Subclass of SurfaceView that draws raindrops with unique colors and random locations
+ *
+ * @author Sean Yang
+ * @version 1.0 2-11-25
  */
 
 public class View extends SurfaceView {
 
-    //Creates 12 unique Paint instance variables so each raindrop
-    //has a unique color
+    //Creates 12 unique Paint instance variables so each raindrop has a unique color
     Paint lightBlue = new Paint();
     Paint lightGreen = new Paint();
     Paint coral = new Paint();
