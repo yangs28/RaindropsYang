@@ -7,11 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
+ * Main XML file that contains layout information for the project
+ *Designed to be view in horizontal orientation on tablet
+ * @author Sean Yang
+ * @version 1.0 2-11-25
+-->
 
     <SurfaceView
         android:id="@+id/mainSurfaceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

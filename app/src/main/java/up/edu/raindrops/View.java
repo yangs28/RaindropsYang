@@ -10,7 +10,6 @@ import java.util.Random;
 
 /**
  * Subclass of SurfaceView that draws raindrops with unique colors and random locations
- *
  * @author Sean Yang
  * @version 1.0 2-11-25
  */
@@ -21,13 +20,13 @@ public class View extends SurfaceView {
     Paint lightBlue = new Paint();
     Paint lightGreen = new Paint();
     Paint coral = new Paint();
-    Paint goldenRod = new Paint();
-    Paint deepPink = new Paint();
+    Paint burntWood = new Paint();
+    Paint navyBlue = new Paint();
     Paint mediumPurple = new Paint();
     Paint darkOrange = new Paint();
     Paint turquoise = new Paint();
     Paint oliveDrab = new Paint();
-    Paint slateGray = new Paint();
+    Paint crimson = new Paint();
     Paint fireBrick = new Paint();
     Paint steelBlue = new Paint();
 
@@ -50,11 +49,11 @@ public class View extends SurfaceView {
         this.coral.setColor(0xFFFF7F50);
         this.coral.setStyle(Paint.Style.FILL);
 
-        this.goldenRod.setColor(0xFFDAA520);
-        this.goldenRod.setStyle(Paint.Style.FILL);
+        this.burntWood.setColor(0xFF8A4b08);
+        this.burntWood.setStyle(Paint.Style.FILL);
 
-        this.deepPink.setColor(0xFFFF1493);
-        this.deepPink.setStyle(Paint.Style.FILL);
+        this.navyBlue.setColor(0xFF0A1F44);
+        this.navyBlue.setStyle(Paint.Style.FILL);
 
         this.mediumPurple.setColor(0xFF9370DB);
         this.mediumPurple.setStyle(Paint.Style.FILL);
@@ -68,8 +67,8 @@ public class View extends SurfaceView {
         this.oliveDrab.setColor(0xFF6B8E23);
         this.oliveDrab.setStyle(Paint.Style.FILL);
 
-        this.slateGray.setColor(0xFF708090);
-        this.slateGray.setStyle(Paint.Style.FILL);
+        this.crimson.setColor(0xFFDC143C);
+        this.crimson.setStyle(Paint.Style.FILL);
 
         this.fireBrick.setColor(0xFFB22222);
         this.fireBrick.setStyle(Paint.Style.FILL);
@@ -81,13 +80,13 @@ public class View extends SurfaceView {
         colorPalette[0] = lightBlue;
         colorPalette[1] = lightGreen;
         colorPalette[2] = coral;
-        colorPalette[3] = goldenRod;
-        colorPalette[4] = deepPink;
+        colorPalette[3] = burntWood;
+        colorPalette[4] = navyBlue;
         colorPalette[5] = mediumPurple;
         colorPalette[6] = darkOrange;
         colorPalette[7] = turquoise;
         colorPalette[8] = oliveDrab;
-        colorPalette[9] = slateGray;
+        colorPalette[9] = crimson;
         colorPalette[10] = fireBrick;
         colorPalette[11] = steelBlue;
     }
@@ -100,10 +99,11 @@ public class View extends SurfaceView {
         int ranAmount = rng.nextInt(6, 13);
         for (int x = 0; x < ranAmount; x++) {
             //Creates randomized values for X and Y positions
-            float ranX = rng.nextFloat() * 800;
-            float ranY = rng.nextFloat() * 800;
-            //Draws the raindrop with a width of 50 and height of 30, also with unique color
-            paper.drawOval(ranX, ranY, ranX + 50, ranY + 30, colorPalette[x]);
+            float ranX = rng.nextFloat() * 800.0f;
+            float ranY = rng.nextFloat() * 800.0f;
+            //Draws the raindrop with a radius of 30, random location and also with unique color
+            //X and Y values are adjusted so that the circles are not drawn out of bounds
+            paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
         }
     }
 
