@@ -99,11 +99,11 @@ public class View extends SurfaceView {
         //Creates randomized values for number of raindrops drawn
         int ranAmount = rng.nextInt(6, 13);
         for (int x = 0; x < ranAmount; x++) {
-        //Creates randomized values for X and Y positions
-        float ranX = rng.nextFloat() * 800;
-        float ranY = rng.nextFloat() * 800;
-        //Draws the raindrop with a width of 50 and height of 30, also with unique color
-        paper.drawOval(ranX, ranY, ranX + 50, ranY + 30,  colorPalette[x]);
+            //Creates randomized values for X and Y positions
+            float ranX = rng.nextFloat() * 800;
+            float ranY = rng.nextFloat() * 800;
+            //Draws the raindrop with a width of 50 and height of 30, also with unique color
+            paper.drawOval(ranX, ranY, ranX + 50, ranY + 30, colorPalette[x]);
         }
     }
 

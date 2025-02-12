@@ -9,6 +9,7 @@
 
 
     <SurfaceView
+        android:id="@+id/mainSurfaceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,21 +19,25 @@
 
         />
 
-<up.edu.raindrops.View
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    <up.edu.raindrops.View
+        android:id="@+id/raindropsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
 
-</up.edu.raindrops.View>
+    </up.edu.raindrops.View>
 
 
     <LinearLayout
+        android:id="@+id/mainHorizontalLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:gravity="bottom"
+        android:orientation="horizontal"
         android:paddingHorizontal="20sp">
 
         <TextView
+            android:id="@+id/downIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down">
@@ -40,12 +45,14 @@
         </TextView>
 
         <SeekBar
+            android:id="@+id/verticalSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="400sp"
-            android:paddingHorizontal="20sp"/>
+            android:paddingHorizontal="20sp" />
 
         <TextView
+            android:id="@+id/upIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Up">
@@ -53,19 +60,22 @@
         </TextView>
 
         <TextView
+            android:id="@+id/leftIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Left"
-            android:paddingHorizontal="20sp">
+            android:paddingHorizontal="20sp"
+            android:text="Left">
 
         </TextView>
 
         <SeekBar
+            android:id="@+id/horizontalSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="400sp"/>
+            android:minWidth="400sp" />
 
         <TextView
+            android:id="@+id/rightIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Right">
