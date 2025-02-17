@@ -34,6 +34,9 @@ public class View extends SurfaceView {
     //Will cycle through this array in the for loop that creates new raindrops
     Paint[] colorPalette = new Paint[12];
 
+    Drops[] dropsArray = new Drops[12];
+
+
     public View(Context context, AttributeSet attrs) {
         //Ensures that raindrop runs properly and can be drawn
         super(context, attrs);
@@ -101,6 +104,10 @@ public class View extends SurfaceView {
             //Creates randomized values for X and Y positions
             float ranX = rng.nextFloat() * 800.0f;
             float ranY = rng.nextFloat() * 800.0f;
+
+
+
+
             //Draws the raindrop with a radius of 30, random location and also with unique color
             //X and Y values are adjusted so that the circles are not drawn out of bounds
             paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
