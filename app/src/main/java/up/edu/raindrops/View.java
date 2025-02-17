@@ -34,7 +34,11 @@ public class View extends SurfaceView {
     //Will cycle through this array in the for loop that creates new raindrops
     Paint[] colorPalette = new Paint[12];
 
+    //Creates a new raindrops array that stores the position and color information of each raindrop
+    //This will be used to track each raindrop
     Drops[] dropsArray = new Drops[12];
+
+    Drops mainDrops;
 
 
     public View(Context context, AttributeSet attrs) {
@@ -96,22 +100,29 @@ public class View extends SurfaceView {
 
     @Override
     public void onDraw(Canvas paper) {
+
         //Creates new Random to allow us to randomize values for quantity and location
         Random rng = new Random();
         //Creates randomized values for number of raindrops drawn
         int ranAmount = rng.nextInt(6, 13);
+
         for (int x = 0; x < ranAmount; x++) {
             //Creates randomized values for X and Y positions
             float ranX = rng.nextFloat() * 800.0f;
             float ranY = rng.nextFloat() * 800.0f;
 
-
-
+            //Before a new raindrop is drawn, stores the information in the dropsArray
+            dropsArray[x] = new Drops(ranX + 60, ranY + 60, 30, colorPalette[x]);
 
             //Draws the raindrop with a radius of 30, random location and also with unique color
             //X and Y values are adjusted so that the circles are not drawn out of bounds
             paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
         }
+
+        //The main raindrop is to be randomly decided by an RNG. Sets that as the mainDrop
+        int randomDrop = rng.nextInt(dropsArray.length);
+        mainDrops = dropsArray[randomDrop];
+
     }
 
 }
