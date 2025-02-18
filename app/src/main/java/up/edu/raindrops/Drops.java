@@ -15,10 +15,33 @@ public class Drops {
     private float radius;
     private Paint color;
 
-    public Drops(float x, float y, float radius, Paint color) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.color = color;
+    public Drops() {
+
     }
+
+    public Drops(float _x, float _y, float _radius, Paint _color) {
+        x = _x;
+        y = _y;
+        radius = _radius;
+        color = _color;
+    }
+
+
+
+    public float getXPos() {
+        return x;
+    }
+
+    public float getYPos() {
+        return y;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public Paint getColor() {
+        return color;
+    }
+
 }

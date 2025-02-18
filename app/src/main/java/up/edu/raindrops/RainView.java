@@ -11,12 +11,12 @@ import java.util.Random;
 /**
  * Subclass of SurfaceView that draws raindrops with unique colors and random locations
  * @author Sean Yang
- * @version 1.0 2-11-25
+ * @version B 1.1 2-17-25
  */
 
-public class View extends SurfaceView {
+public class RainView extends SurfaceView {
 
-   public Drops mainDrops;
+    public Drops mainDrops;
 
 
     //Creates 12 unique Paint instance variables so each raindrop has a unique color
@@ -41,12 +41,31 @@ public class View extends SurfaceView {
     //This will be used to track each raindrop
     Drops[] dropsArray = new Drops[12];
 
+    //This stores the physical X, Y coordinates of the main raindrop
+    float mainX;
+    float mainY;
 
 
-    public View(Context context, AttributeSet attrs) {
+
+    public RainView(Context context, AttributeSet attrs) {
         //Ensures that raindrop runs properly and can be drawn
         super(context, attrs);
         setWillNotDraw(false);
+
+        //Creates new RNG to randomly decide the position of the main raindrop
+        Random rng = new Random();
+
+        float ranX = rng.nextFloat() * 700.0f;
+        float ranY = rng.nextFloat() * 700.0f;
+        mainX = ranX;
+        mainY = ranY;
+        //Sets the main raindrop to be equal to those coordinates
+        //Color of the main raindrop will always be set to the last color in the colorPalette array
+        mainDrops = new Drops(ranX + 60, ranY + 60, 30, colorPalette[11]);
+
+
+
+
 
         //Sets the color for every Paint object created previously
         this.lightBlue.setColor(0xFFADD8E6);
@@ -102,6 +121,7 @@ public class View extends SurfaceView {
 
     }
 
+    //Getter method that returns the information of the main raindrop
     public Drops getDrops() {
         return mainDrops;
     }
@@ -114,10 +134,10 @@ public class View extends SurfaceView {
         //Creates randomized values for number of raindrops drawn
         int ranAmount = rng.nextInt(6, 13);
 
-        for (int x = 0; x < ranAmount; x++) {
+        for (int x = 0; x < ranAmount - 1; x++) {
             //Creates randomized values for X and Y positions
-            float ranX = rng.nextFloat() * 800.0f;
-            float ranY = rng.nextFloat() * 800.0f;
+            float ranX = rng.nextFloat() * 700.0f;
+            float ranY = rng.nextFloat() * 700.0f;
 
             //Before a new raindrop is drawn, stores the information in the dropsArray
             dropsArray[x] = new Drops(ranX + 60, ranY + 60, 30, colorPalette[x]);
@@ -125,11 +145,10 @@ public class View extends SurfaceView {
             //Draws the raindrop with a radius of 30, random location and also with unique color
             //X and Y values are adjusted so that the circles are not drawn out of bounds
             paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
-        }
+            //This draws the main raindrop with the stored positional values
+            paper.drawCircle(mainX, mainY , 30, colorPalette[11]);
 
-        //The main raindrop is to be randomly decided by an RNG. Sets that as the mainDrop
-        int randomDrop = rng.nextInt(dropsArray.length);
-        mainDrops = dropsArray[randomDrop];
+        }
 
     }
 

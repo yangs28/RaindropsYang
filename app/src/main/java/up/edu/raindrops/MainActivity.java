@@ -1,6 +1,8 @@
 package up.edu.raindrops;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.SeekBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,5 +32,22 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        RainView newView = this.findViewById(R.id.raindropsView);
+        DropsManager newManager = new DropsManager(newView);
+
+
+        SeekBar vertSeekBar = findViewById(R.id.verticalSeekBar);
+        vertSeekBar.setProgress(newManager.getYPos());
+
+        SeekBar horizontalSeekbar = findViewById(R.id.horizontalSeekBar);
+        horizontalSeekbar.setProgress(newManager.getXPos());
+
+        vertSeekBar.setOnSeekBarChangeListener(newManager);
+        horizontalSeekbar.setOnSeekBarChangeListener(newManager);
+
+
+
     }
 }

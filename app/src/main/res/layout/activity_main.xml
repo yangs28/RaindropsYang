@@ -25,13 +25,13 @@
 
         />
 
-    <up.edu.raindrops.View
+    <up.edu.raindrops.RainView
         android:id="@+id/raindropsView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-    </up.edu.raindrops.View>
+    </up.edu.raindrops.RainView>
 
 
     <LinearLayout
@@ -54,7 +54,9 @@
             android:id="@+id/verticalSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:max="800"
             android:minWidth="400sp"
+            android:progress="0"
             android:paddingHorizontal="20sp" />
 
         <TextView
@@ -78,6 +80,7 @@
             android:id="@+id/horizontalSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:max="800"
             android:minWidth="400sp" />
 
         <TextView
