@@ -43,27 +43,30 @@
         android:paddingHorizontal="20sp">
 
         <TextView
-            android:id="@+id/downIndicator"
+            android:id="@+id/upIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Down">
+            android:text="Up">
 
         </TextView>
+
 
         <SeekBar
             android:id="@+id/verticalSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:max="800"
-            android:minWidth="400sp"
+            android:minWidth="401dp"
             android:progress="0"
             android:paddingHorizontal="20sp" />
 
+
+
         <TextView
-            android:id="@+id/upIndicator"
+            android:id="@+id/downIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Up">
+            android:text="Down">
 
         </TextView>
 
@@ -81,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:max="800"
-            android:minWidth="400sp" />
+            android:minWidth="400dp" />
 
         <TextView
             android:id="@+id/rightIndicator"

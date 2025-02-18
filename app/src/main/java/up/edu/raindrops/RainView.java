@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import java.util.Random;
 
 /**
  * Subclass of SurfaceView that draws raindrops with unique colors and random locations
+ *
  * @author Sean Yang
  * @version B 1.1 2-17-25
  */
@@ -45,7 +47,8 @@ public class RainView extends SurfaceView {
     float mainX;
     float mainY;
 
-
+    int eat = 0;
+    Paint newColor;
 
     public RainView(Context context, AttributeSet attrs) {
         //Ensures that raindrop runs properly and can be drawn
@@ -62,9 +65,6 @@ public class RainView extends SurfaceView {
         //Sets the main raindrop to be equal to those coordinates
         //Color of the main raindrop will always be set to the last color in the colorPalette array
         mainDrops = new Drops(ranX + 60, ranY + 60, 30, colorPalette[11]);
-
-
-
 
 
         //Sets the color for every Paint object created previously
@@ -136,23 +136,68 @@ public class RainView extends SurfaceView {
 
         for (int x = 0; x < ranAmount - 1; x++) {
             //Creates randomized values for X and Y positions
-            float ranX = rng.nextFloat() * 700.0f;
-            float ranY = rng.nextFloat() * 700.0f;
 
-            //Before a new raindrop is drawn, stores the information in the dropsArray
-            dropsArray[x] = new Drops(ranX + 60, ranY + 60, 30, colorPalette[x]);
+            if (mainDrops.hasUpdated == false) {
+                Log.i("drops", "hasUpdated is False!");
 
-            //Draws the raindrop with a radius of 30, random location and also with unique color
-            //X and Y values are adjusted so that the circles are not drawn out of bounds
-            paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
-            //This draws the main raindrop with the stored positional values
-            paper.drawCircle(mainX, mainY , 30, colorPalette[11]);
 
+                float ranX = (rng.nextFloat() * 700.0f) + 60.0f;
+                float ranY = (rng.nextFloat() * 700.0f) + 60.0f;
+
+                Log.i("drops", "Create an old drop here!" + ranX + ranY);
+
+
+                //Before a new raindrop is drawn, stores the information in the dropsArray
+                dropsArray[x] = new Drops(ranX, ranY, 30, colorPalette[x]);
+
+                //Draws the raindrop with a radius of 30, random location and also with unique color
+                //X and Y values are adjusted so that the circles are not drawn out of bounds
+                paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
+            } else {
+                Log.i("drops", "hasUpdated is True!");
+
+                for (int z = 0; z < dropsArray.length; z++) {
+
+
+                        if (dropsArray[z] != null) {
+
+                        if (Math.abs(mainDrops.getXPos() - dropsArray[z].getXPos()) <= 10 == false
+                                && Math.abs(mainDrops.getYPos() - dropsArray[z].getYPos()) <= 10 == false) {
+                            float tempX = dropsArray[z].getXPos();
+                            float tempY = dropsArray[z].getYPos();
+                            Paint tempColor = dropsArray[z].getColor();
+                            Log.i("drops", "Create a new drop here!" + tempX + tempY);
+                            paper.drawCircle(tempX, tempY, 30, colorPalette[z]);
+                        }
+
+                    }
+                }
+
+            }
+
+            if (mainDrops.hasUpdated == false) {
+                //This draws the main raindrop with the stored positional values
+                paper.drawCircle(mainX, mainY, 30, colorPalette[11]);
+            } else {
+
+                paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, colorPalette[11]);
+
+                for (int a = 0; a < dropsArray.length - 1; a++) {
+                    if (dropsArray[a] != null) {
+                        if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 10 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 10
+                        ) {
+
+                            paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30 + eat, colorPalette[11]);
+
+                            Log.i("drops", "Touched! X");
+                        }
+                    }
+                }
+
+            }
         }
 
     }
-
-
 
 
 }

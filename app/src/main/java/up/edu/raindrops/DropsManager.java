@@ -25,7 +25,8 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     private RainView theView;
     private Drops theDrop;
 
-    boolean hasUpdated;
+
+
 
     //Constructor automatically sets the instance variables using info from the main raindrop
     public DropsManager(RainView mainView) {
@@ -34,6 +35,8 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
         x = (int)theDrop.getXPos();
         y = (int)theDrop.getYPos();
         Log.i("cake", "how many" + x);
+
+
     }
 
     public int getXPos() {
@@ -63,6 +66,23 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
+        if(seekBar.getId() == 2131230939) {
+            theDrop.setX(seekBar.getProgress());
+        }
+        else {
+            theDrop.setY(seekBar.getProgress());
+        }
+
+        //theDrop.setX(seekBar.getProgress());
+        //theDrop.setY(seekBar.getProgress());
+        theDrop.hasUpdated = true;
+        Log.i("prog", "how much progress" + x);
+        Log.i("prog", "what is id" + seekBar.getId());
+
+        theView.invalidate();
+
+
+
     }
 
     @Override
@@ -74,4 +94,5 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
 }
