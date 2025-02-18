@@ -11,9 +11,11 @@ import java.util.Random;
 
 /**
  * Subclass of SurfaceView that draws raindrops with unique colors and random locations
+ * Creates a movable main raindrop that is the color steel blue. Can be controlled manually via the two seekbars
+ * When the main raindrop touches another raindrop, it absorbs that raindrop
  *
  * @author Sean Yang
- * @version B 1.1 2-17-25
+ * @version B 1.2 2-18-25
  */
 
 public class RainView extends SurfaceView {
@@ -47,7 +49,6 @@ public class RainView extends SurfaceView {
     float mainX;
     float mainY;
 
-    int eat = 0;
     Paint newColor;
 
     public RainView(Context context, AttributeSet attrs) {
@@ -58,11 +59,12 @@ public class RainView extends SurfaceView {
         //Creates new RNG to randomly decide the position of the main raindrop
         Random rng = new Random();
 
+        //Randomly determines the position of the main raindrop
         float ranX = rng.nextFloat() * 700.0f;
         float ranY = rng.nextFloat() * 700.0f;
+        //Sets the coordinates to be that randomly selected value
         mainX = ranX;
         mainY = ranY;
-        //Sets the main raindrop to be equal to those coordinates
         //Color of the main raindrop will always be set to the last color in the colorPalette array
         mainDrops = new Drops(ranX + 60, ranY + 60, 30, colorPalette[11]);
 
@@ -118,6 +120,22 @@ public class RainView extends SurfaceView {
         colorPalette[10] = fireBrick;
         colorPalette[11] = steelBlue;
 
+        //Creates a random array of raindrops between values 6-12
+        int ranAmount = rng.nextInt(6, 13);
+        //Generates random array of raindrops. -1 to account for the extra main raindrop
+        for (int x = 0; x < ranAmount - 1; x++) {
+
+            //Creates randomly selected X, Y coordinates
+            ranX = (rng.nextFloat() * 700.0f) + 60.0f;
+            ranY = (rng.nextFloat() * 700.0f) + 60.0f;
+            Log.i("drops", "Create an old drop here!" + ranX + ranY);
+            //Stores all of those values in the raindrops array
+            //Before a new raindrop is drawn, stores the information in the dropsArray
+            dropsArray[x] = new Drops(ranX, ranY, 30, colorPalette[x]);
+
+
+        }
+
 
     }
 
@@ -129,77 +147,48 @@ public class RainView extends SurfaceView {
     @Override
     public void onDraw(Canvas paper) {
 
-        //Creates new Random to allow us to randomize values for quantity and location
-        Random rng = new Random();
-        //Creates randomized values for number of raindrops drawn
-        int ranAmount = rng.nextInt(6, 13);
+        //Draws every raindrop in the raindrops array
+        for (int x = 0; x < dropsArray.length; x++) {
 
-        for (int x = 0; x < ranAmount - 1; x++) {
-            //Creates randomized values for X and Y positions
-
-            if (mainDrops.hasUpdated == false) {
-                Log.i("drops", "hasUpdated is False!");
-
-
-                float ranX = (rng.nextFloat() * 700.0f) + 60.0f;
-                float ranY = (rng.nextFloat() * 700.0f) + 60.0f;
-
-                Log.i("drops", "Create an old drop here!" + ranX + ranY);
-
-
-                //Before a new raindrop is drawn, stores the information in the dropsArray
-                dropsArray[x] = new Drops(ranX, ranY, 30, colorPalette[x]);
-
-                //Draws the raindrop with a radius of 30, random location and also with unique color
-                //X and Y values are adjusted so that the circles are not drawn out of bounds
-                paper.drawCircle(ranX + 60, ranY + 60, 30, colorPalette[x]);
-            } else {
-                Log.i("drops", "hasUpdated is True!");
-
-                for (int z = 0; z < dropsArray.length; z++) {
-
-
-                        if (dropsArray[z] != null) {
-
-                        if (Math.abs(mainDrops.getXPos() - dropsArray[z].getXPos()) <= 10 == false
-                                && Math.abs(mainDrops.getYPos() - dropsArray[z].getYPos()) <= 10 == false) {
-                            float tempX = dropsArray[z].getXPos();
-                            float tempY = dropsArray[z].getYPos();
-                            Paint tempColor = dropsArray[z].getColor();
-                            Log.i("drops", "Create a new drop here!" + tempX + tempY);
-                            paper.drawCircle(tempX, tempY, 30, colorPalette[z]);
-                        }
-
-                    }
-                }
-
+            //Only draws the raindrop if the position is alive (not null). If raindrop has been absorbed (null), do not draw it
+            if (dropsArray[x] != null) {
+                //Get the positional and color data from the array, then draws the circle with that data
+                float tempX = dropsArray[x].getXPos();
+                float tempY = dropsArray[x].getYPos();
+                Paint tempColor = dropsArray[x].getColor();
+                paper.drawCircle(tempX, tempY, 30, colorPalette[x]);
             }
 
-            if (mainDrops.hasUpdated == false) {
-                //This draws the main raindrop with the stored positional values
-                paper.drawCircle(mainX, mainY, 30, colorPalette[11]);
-            } else {
-
-                paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, colorPalette[11]);
-
-                for (int a = 0; a < dropsArray.length - 1; a++) {
-                    if (dropsArray[a] != null) {
-                        if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 10 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 10
-                        ) {
-
-                            paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30 + eat, colorPalette[11]);
-
-                            Log.i("drops", "Touched! X");
-                        }
-                    }
-                }
-
-            }
         }
 
+        //Draws the default position of the main raindrop if it has not moved
+        if (mainDrops.hasUpdated == false) {
+            //This draws the main raindrop with the stored positional values
+            paper.drawCircle(mainX, mainY, 30, colorPalette[11]);
+        }
+        else {
+            //If the main raindrop has been moved, get the new position and redraw it
+            paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, colorPalette[11]);
+
+            //Runs a new for loop that checks for collision
+            for (int a = 0; a < dropsArray.length; a++) {
+                //Checks to make sure the raindrop is alive, only runs if it is alive
+                if (dropsArray[a] != null) {
+                    //Absolute value function that checks to make sure a raindrop is within 45 pixels of another raindrop
+                    if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 45 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 45
+                    ) {
+                        //If a collision is detected, that raindrop is killed (made null). Raindrop will no longer be drawn
+                        dropsArray[a] = null;
+                    }
+                }
+            }
+
+        }
     }
 
-
 }
+
+
+
 
 
