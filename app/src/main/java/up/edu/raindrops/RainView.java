@@ -74,7 +74,7 @@ public class RainView extends SurfaceView {
 
             // Generate random RGB values (0-255)
             ///Got external help from Alexander Leah for this part of the assignment. He helped show me how to make a new Paint
-            ///object using ints rather than hexadecmial. Helped immensely for calculating the average color for the collision mechanic
+            ///object using ints rather than hexadecmial. Helped immensely for calculating the average color for the collision mechanis
             int tempR = rng.nextInt(256);
             int tempG = rng.nextInt(256);
             int tempB = rng.nextInt(256);
