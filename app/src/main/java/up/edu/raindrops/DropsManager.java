@@ -14,7 +14,7 @@ import up.edu.raindrops.Drops;
  * of the main raindrop object. Has methods for obtaining and modifying X and Y positions
  *
  * @author Sean Yang
- * @version B 1.1 2-18-25
+ * @version B 1.4 2-18-25
  */
 public class DropsManager implements CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
     //Stores information for the main raindrop
@@ -27,17 +27,15 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     private Drops theDrop;
 
 
-
-
     //Constructor automatically sets the instance variables using info from the main raindrop
     public DropsManager(RainView mainView) {
+        //Sets the RainView object to be from the parameter
         theView = mainView;
+        //Grabs the main raindrop from the RainView object
         theDrop = theView.getDrops();
-        x = (int)theDrop.getXPos();
-        y = (int)theDrop.getYPos();
-
-        Log.i("cake", "how many" + x);
-
+        //Grabs the XY coordinates of the main raindrop for the instance variables
+        x = (int) theDrop.getXPos();
+        y = (int) theDrop.getYPos();
 
     }
 
@@ -58,8 +56,6 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     }
 
 
-
-
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
@@ -69,15 +65,15 @@ public class DropsManager implements CompoundButton.OnCheckedChangeListener, See
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
         //Compares the ID of the seekbar. Sees if the ID matches the ID of the horizontal seek bar
-        if(seekBar.getId() == 2131230939) {
+        if (seekBar.getId() == 2131230939) {
             //If yes, set the X value to be equal to the seekbar's value
             theDrop.setX(seekBar.getProgress());
-        }
-        else {
+        } else {
             //If not, set the Y value instead
             theDrop.setY(seekBar.getProgress());
         }
-        //This confirms that the position has changed and we need to update the position
+
+        //When the seekbar detects a change, sets hasUpdated to true. This means we must redraw the surface view
         theDrop.hasUpdated = true;
         theView.invalidate();
     }

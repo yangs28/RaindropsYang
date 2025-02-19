@@ -11,14 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-
-
 /**
  * A MainActivity class that makes the Raindrops project run and manages
  * the interface
  *
  * @author Sean Yang
- * @version 1.0 2-11-25
+ * @version 1.4 2-18-25
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         //Sets listeners on both the seekbars to the manager
         vertSeekBar.setOnSeekBarChangeListener(newManager);
         horizontalSeekbar.setOnSeekBarChangeListener(newManager);
-
 
 
     }

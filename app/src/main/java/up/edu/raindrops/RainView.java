@@ -11,36 +11,21 @@ import android.view.SurfaceView;
 import java.util.Random;
 
 /**
- * Subclass of SurfaceView that draws raindrops with unique colors and random locations
+ * Subclass of SurfaceView that draws raindrops with randomized colors and locations
  * Creates a movable main raindrop that is the color steel blue. Can be controlled manually via the two seekbars
- * When the main raindrop touches another raindrop, it absorbs that raindrop
+ * When the main raindrop touches another raindrop, it absorbs that raindrop. The main raindrop's color changes to be the
+ * average of the two raindrops
  *
  * @author Sean Yang
- * @version B 1.2 2-18-25
+ * @version B 1.4 2-18-25
  */
 
 public class RainView extends SurfaceView {
 
+    //Creates new Drop object that will be designated as the main raindrop
     public Drops mainDrops;
-
-
-    //Creates 12 unique Paint instance variables so each raindrop has a unique color
-    Paint lightBlue = new Paint();
-    Paint lightGreen = new Paint();
-    Paint coral = new Paint();
-    Paint burntWood = new Paint();
-    Paint navyBlue = new Paint();
-    Paint mediumPurple = new Paint();
-    Paint darkOrange = new Paint();
-    Paint turquoise = new Paint();
-    Paint oliveDrab = new Paint();
-    Paint crimson = new Paint();
-    Paint fireBrick = new Paint();
+    //Creates new color steelBlue that is the default color of the main raindrop
     Paint steelBlue = new Paint();
-
-    //Creates new colorPalette array for storing the Paint objects
-    //Will cycle through this array in the for loop that creates new raindrops
-    Paint[] colorPalette = new Paint[12];
 
     //Creates a new raindrops array that stores the position and color information of each raindrop
     //This will be used to track each raindrop
@@ -50,12 +35,14 @@ public class RainView extends SurfaceView {
     float mainX;
     float mainY;
 
-    Paint newColor;
-
     public RainView(Context context, AttributeSet attrs) {
         //Ensures that raindrop runs properly and can be drawn
         super(context, attrs);
         setWillNotDraw(false);
+
+        // Sets the RGB value for the color using RGB components for steel blue (70, 130, 180)
+        this.steelBlue.setColor(Color.rgb(70, 130, 180));
+        this.steelBlue.setStyle(Paint.Style.FILL);
 
         //Creates new RNG to randomly decide the position of the main raindrop
         Random rng = new Random();
@@ -66,62 +53,15 @@ public class RainView extends SurfaceView {
         //Sets the coordinates to be that randomly selected value
         mainX = ranX;
         mainY = ranY;
-        //Color of the main raindrop will always be set to the last color in the colorPalette array
-        mainDrops = new Drops(ranX + 60, ranY + 60, 30, colorPalette[11]);
+        //Creates the main raindrop object.
+        mainDrops = new Drops(ranX + 60, ranY + 60, 30, steelBlue);
 
+        // Set the RGB components for the main raindrop
+        mainDrops.setR(70);
+        mainDrops.setG(130);
+        mainDrops.setB(180);
 
-        //Sets the color for every Paint object created previously
-        this.lightBlue.setColor(0xFFADD8E6);
-        this.lightBlue.setStyle(Paint.Style.FILL);
-
-        this.lightGreen.setColor(0xFF90EE90);
-        this.lightGreen.setStyle(Paint.Style.FILL);
-
-        this.coral.setColor(0xFFFF7F50);
-        this.coral.setStyle(Paint.Style.FILL);
-
-        this.burntWood.setColor(0xFF8A4b08);
-        this.burntWood.setStyle(Paint.Style.FILL);
-
-        this.navyBlue.setColor(0xFF0A1F44);
-        this.navyBlue.setStyle(Paint.Style.FILL);
-
-        this.mediumPurple.setColor(0xFF9370DB);
-        this.mediumPurple.setStyle(Paint.Style.FILL);
-
-        this.darkOrange.setColor(0xFFFF8C00);
-        this.darkOrange.setStyle(Paint.Style.FILL);
-
-        this.turquoise.setColor(0xFF40E0D0);
-        this.turquoise.setStyle(Paint.Style.FILL);
-
-        this.oliveDrab.setColor(0xFF6B8E23);
-        this.oliveDrab.setStyle(Paint.Style.FILL);
-
-        this.crimson.setColor(0xFFDC143C);
-        this.crimson.setStyle(Paint.Style.FILL);
-
-        this.fireBrick.setColor(0xFFB22222);
-        this.fireBrick.setStyle(Paint.Style.FILL);
-
-        this.steelBlue.setColor(0xFF4682B4);
-        this.steelBlue.setStyle(Paint.Style.FILL);
-
-        //Initiates each position in the Paint array
-        colorPalette[0] = lightBlue;
-        colorPalette[1] = lightGreen;
-        colorPalette[2] = coral;
-        colorPalette[3] = burntWood;
-        colorPalette[4] = navyBlue;
-        colorPalette[5] = mediumPurple;
-        colorPalette[6] = darkOrange;
-        colorPalette[7] = turquoise;
-        colorPalette[8] = oliveDrab;
-        colorPalette[9] = crimson;
-        colorPalette[10] = fireBrick;
-        colorPalette[11] = steelBlue;
-
-        //Creates a random array of raindrops between values 6-12
+        //RNG that selects value from 6-12 for the below array
         int ranAmount = rng.nextInt(6, 13);
         //Generates random array of raindrops. -1 to account for the extra main raindrop
         for (int x = 0; x < ranAmount - 1; x++) {
@@ -129,27 +69,24 @@ public class RainView extends SurfaceView {
             //Creates randomly selected X, Y coordinates
             ranX = (rng.nextFloat() * 700.0f) + 60.0f;
             ranY = (rng.nextFloat() * 700.0f) + 60.0f;
-            Log.i("drops", "Create an old drop here!" + ranX + ranY);
 
             Paint tempPaint = new Paint();
 
             // Generate random RGB values (0-255)
+            ///Got external help from Alexander Leah for this part of the assignment. He helped show me how to make a new Paint
+            ///object using ints rather than hexadecmial. Helped immensely for calculating the average color for the collision mechanic
             int tempR = rng.nextInt(256);
             int tempG = rng.nextInt(256);
             int tempB = rng.nextInt(256);
+            //Creates a new unique Paint object with those randomly selected RGB values
             tempPaint.setColor(Color.rgb(tempR, tempG, tempB));
 
-
-            //Stores all of those values in the raindrops array
-            //Before a new raindrop is drawn, stores the information in the dropsArray
+            //Draws a new raindrop with random coordinates and a randomly generated color
             dropsArray[x] = new Drops(ranX, ranY, 30, tempPaint);
-            //Stores the RGB color components within the drop
+            //Stores the RGB color components within the drop for calculation
             dropsArray[x].setR(tempR);
             dropsArray[x].setG(tempG);
             dropsArray[x].setB(tempB);
-
-
-
         }
 
 
@@ -178,20 +115,21 @@ public class RainView extends SurfaceView {
 
         //Draws the default position of the main raindrop if it has not moved
         if (mainDrops.hasUpdated == false) {
-            //This draws the main raindrop with the stored positional values
-            paper.drawCircle(mainX, mainY, 30, colorPalette[11]);
-        }
-        else {
+            //This draws the main raindrop with the default position and color
+            paper.drawCircle(mainX, mainY, 30, steelBlue);
+        } else {
             //If the main raindrop has been moved, get the new position and redraw it
 
-            // Retrieve current RGB values from mainDrops
+            // Retrieve the current RGB values from the main rain drop
             int MainR = mainDrops.getR();
             int MainG = mainDrops.getG();
             int MainB = mainDrops.getB();
 
+            //Create a new Paint object using the RGB value
             Paint tempPaint = new Paint();
             tempPaint.setColor(Color.rgb(MainR, MainG, MainB));
 
+            //Now redraw the main raindrop with the updated color and position information
             paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, tempPaint);
 
             //Runs a new for loop that checks for collision
@@ -199,24 +137,25 @@ public class RainView extends SurfaceView {
                 //Checks to make sure the raindrop is alive, only runs if it is alive
                 if (dropsArray[a] != null) {
                     //Absolute value function that checks to make sure a raindrop is within 45 pixels of another raindrop
-                    if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 45 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 45
-                    ) {
+                    if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 45 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 45) {
+                        //If a collision occurs,
 
+                        //Grabs the RGB value of the raindrop that was collided with
                         int tempR = dropsArray[a].getR();
                         int tempG = dropsArray[a].getG();
                         int tempB = dropsArray[a].getB();
 
-                        // Averaging the RGB values with mainDrops
+                        //Compares the RGB values and creates a new average value
                         int tempMainR = (tempR + mainDrops.getR()) / 2;
                         int tempMainG = (tempG + mainDrops.getG()) / 2;
                         int tempMainB = (tempB + mainDrops.getB()) / 2;
 
+                        //Set the RGB value of the main raindrop to be the calculated average
                         mainDrops.setR(tempMainR);
                         mainDrops.setG(tempMainG);
                         mainDrops.setB(tempMainB);
 
-
-                        //If a collision is detected, that raindrop is killed (made null). Raindrop will no longer be drawn
+                        //The raindrop that was collided with is made null, so it will no longer be drawn
                         dropsArray[a] = null;
 
 

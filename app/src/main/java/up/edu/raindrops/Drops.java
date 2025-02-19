@@ -6,8 +6,10 @@ import android.graphics.Paint;
 /**
  * Custom class Drops that stores the information of a specific Raindrop
  * Stores position, radius, and the color of the object. Also stores RGB as 3 individual ints
+ * Contains setter methods to update the RGB and position of the raindrop
+ *
  * @author Sean Yang
- * @version Part B 1.2 2-18-25
+ * @version Part B 1.4 2-18-25
  */
 public class Drops {
     private float x;
@@ -19,19 +21,13 @@ public class Drops {
     private int b;
     boolean hasUpdated = false;
 
-
-    public Drops() {
-
-    }
-
+    //Default constructor, creates new raindrop with X, Y, radius and color
     public Drops(float _x, float _y, float _radius, Paint _color) {
         x = _x;
         y = _y;
         radius = _radius;
         color = _color;
     }
-
-
 
     public float getXPos() {
         return x;
@@ -81,9 +77,6 @@ public class Drops {
     public void setY(float y) {
         this.y = y;
     }
-
-
-
 
 
 }
