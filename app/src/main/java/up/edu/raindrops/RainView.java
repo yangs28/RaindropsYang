@@ -2,6 +2,7 @@ package up.edu.raindrops;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -129,9 +130,24 @@ public class RainView extends SurfaceView {
             ranX = (rng.nextFloat() * 700.0f) + 60.0f;
             ranY = (rng.nextFloat() * 700.0f) + 60.0f;
             Log.i("drops", "Create an old drop here!" + ranX + ranY);
+
+            Paint tempPaint = new Paint();
+
+            // Generate random RGB values (0-255)
+            int tempR = rng.nextInt(256);
+            int tempG = rng.nextInt(256);
+            int tempB = rng.nextInt(256);
+            tempPaint.setColor(Color.rgb(tempR, tempG, tempB));
+
+
             //Stores all of those values in the raindrops array
             //Before a new raindrop is drawn, stores the information in the dropsArray
-            dropsArray[x] = new Drops(ranX, ranY, 30, colorPalette[x]);
+            dropsArray[x] = new Drops(ranX, ranY, 30, tempPaint);
+            //Stores the RGB color components within the drop
+            dropsArray[x].setR(tempR);
+            dropsArray[x].setG(tempG);
+            dropsArray[x].setB(tempB);
+
 
 
         }
@@ -155,8 +171,7 @@ public class RainView extends SurfaceView {
                 //Get the positional and color data from the array, then draws the circle with that data
                 float tempX = dropsArray[x].getXPos();
                 float tempY = dropsArray[x].getYPos();
-                Paint tempColor = dropsArray[x].getColor();
-                paper.drawCircle(tempX, tempY, 30, colorPalette[x]);
+                paper.drawCircle(tempX, tempY, 30, dropsArray[x].getColor());
             }
 
         }
@@ -168,7 +183,16 @@ public class RainView extends SurfaceView {
         }
         else {
             //If the main raindrop has been moved, get the new position and redraw it
-            paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, colorPalette[11]);
+
+            // Retrieve current RGB values from mainDrops
+            int MainR = mainDrops.getR();
+            int MainG = mainDrops.getG();
+            int MainB = mainDrops.getB();
+
+            Paint tempPaint = new Paint();
+            tempPaint.setColor(Color.rgb(MainR, MainG, MainB));
+
+            paper.drawCircle(mainDrops.getXPos(), mainDrops.getYPos(), 30, tempPaint);
 
             //Runs a new for loop that checks for collision
             for (int a = 0; a < dropsArray.length; a++) {
@@ -177,8 +201,25 @@ public class RainView extends SurfaceView {
                     //Absolute value function that checks to make sure a raindrop is within 45 pixels of another raindrop
                     if (Math.abs(mainDrops.getXPos() - dropsArray[a].getXPos()) <= 45 && Math.abs(mainDrops.getYPos() - dropsArray[a].getYPos()) <= 45
                     ) {
+
+                        int tempR = dropsArray[a].getR();
+                        int tempG = dropsArray[a].getG();
+                        int tempB = dropsArray[a].getB();
+
+                        // Averaging the RGB values with mainDrops
+                        int tempMainR = (tempR + mainDrops.getR()) / 2;
+                        int tempMainG = (tempG + mainDrops.getG()) / 2;
+                        int tempMainB = (tempB + mainDrops.getB()) / 2;
+
+                        mainDrops.setR(tempMainR);
+                        mainDrops.setG(tempMainG);
+                        mainDrops.setB(tempMainB);
+
+
                         //If a collision is detected, that raindrop is killed (made null). Raindrop will no longer be drawn
                         dropsArray[a] = null;
+
+
                     }
                 }
             }

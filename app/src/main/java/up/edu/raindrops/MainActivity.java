@@ -33,17 +33,17 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
+        //Finds the surface view we made in the XML format
         RainView newView = this.findViewById(R.id.raindropsView);
+        //Creates a new DropsManager that helps modify position and get all the information
         DropsManager newManager = new DropsManager(newView);
-
-
+        //Finds the vertical seekbar. Sets the progress to be the Y position of the main raindrop
         SeekBar vertSeekBar = findViewById(R.id.verticalSeekBar);
         vertSeekBar.setProgress(newManager.getYPos());
-
+        //Finds the horizontal seekbar. Sets the progress to be the X position of the main raindrop
         SeekBar horizontalSeekbar = findViewById(R.id.horizontalSeekBar);
         horizontalSeekbar.setProgress(newManager.getXPos());
-
+        //Sets listeners on both the seekbars to the manager
         vertSeekBar.setOnSeekBarChangeListener(newManager);
         horizontalSeekbar.setOnSeekBarChangeListener(newManager);
 
